@@ -39,7 +39,21 @@ describe('Journal entries', function() {
       });
   });
 
-  it('should not create entries with invalid input');
+  it('should not create entries with invalid input', function(done) {
+    var args = {};
+
+    request
+      .post('/entries')
+      .send(args)
+      .expect(422)
+      .end(function(err, res) {
+        if (err) { return done(err); }
+
+        expect(res.body.errors).to.exist;
+        done();
+      });
+  });
+
   it('should allow updating an existing entry');
   it('should allow deleting an existing entry');
   it('should allow retrieving a list of entries');

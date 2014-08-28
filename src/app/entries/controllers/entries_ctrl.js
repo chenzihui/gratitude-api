@@ -16,6 +16,11 @@ EntriesCtrl = (function() {
       return res.status(201).json({
         entry: entry.toJSON()
       });
+    })
+    .catch(function(err) {
+      return res.status(422).json({
+        errors: { message: 'Entry cannot be left blank' }
+      });
     });
   };
 
