@@ -1,8 +1,9 @@
 'use strict';
 
-var db    = require('../support/db'),
+var db           = require('../support/db'),
 
-    Entry = require('../../src/app/entries/models/Entry');
+    Entry        = require('../../src/app/entries/models/Entry'),
+    EntryFactory = require('../support/factories/entry_factory');
 
 describe('Journal entries', function() {
 
@@ -54,8 +55,41 @@ describe('Journal entries', function() {
       });
   });
 
-  it('should allow updating an existing entry');
-  it('should allow deleting an existing entry');
-  it('should allow retrieving a list of entries');
-  it('should allow retrieving entries by month and year');
+  describe('Existing entries', function() {
+
+    var _entry;
+
+    beforeEach(function(done) {
+      EntryFactory.create()
+      .then(function(entry) {
+        _entry = entry.toJSON();
+        done();
+      });
+    });
+
+    it('should allow updating an existing entry', function(done) {
+      var args = { text: 'Updated text' },
+          entry;
+
+      request
+        .put('/entries/' + _entry.id)
+        .send(args)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) { return done(err); }
+
+          Entry.findOne({ id: _entry.id })
+          .then(function(data) {
+            entry = data.toJSON();
+
+            expect(entry.text).to.equal(args.text);
+            done();
+          });
+        });
+    });
+
+    it('should allow deleting an existing entry');
+    it('should allow retrieving a list of entries');
+    it('should allow retrieving entries by month and year');
+  });
 });

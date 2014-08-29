@@ -24,8 +24,23 @@ EntriesCtrl = (function() {
     });
   };
 
+  var update = function(req, res) {
+
+    Entry.findOne({ id: req.params.id })
+    .then(function(entry) {
+      entry.set('text', req.body.text);
+      return entry.save()
+    })
+    .then(function(entry) {
+      return res.status(200).json({
+        entry: { id: entry.id }
+      });
+    });
+  };
+
   return {
-    create: create
+    create: create,
+    update: update
   };
 
 }());
