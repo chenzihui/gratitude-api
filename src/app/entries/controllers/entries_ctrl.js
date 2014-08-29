@@ -35,6 +35,11 @@ EntriesCtrl = (function() {
       return res.status(200).json({
         entry: { id: entry.id }
       });
+    })
+    .catch(function(err) {
+      return res.status(404).json({
+        errors: { message: 'Entry not found' }
+      });
     });
   };
 

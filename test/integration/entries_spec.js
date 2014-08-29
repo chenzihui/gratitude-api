@@ -88,6 +88,19 @@ describe('Journal entries', function() {
         });
     });
 
+    it('should not allow updating entries that do not exist', function(done) {
+      request
+        .put('/entries/' + _entry.id + 1)
+        .send({ text: 'Something New' })
+        .expect(404)
+        .end(function(err, res) {
+          if (err) { return done(err); }
+
+          expect(res.body.errors).to.exist;
+          done();
+        });
+    });
+
     it('should allow deleting an existing entry');
     it('should allow retrieving a list of entries');
     it('should allow retrieving entries by month and year');
