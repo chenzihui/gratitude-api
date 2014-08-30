@@ -28,6 +28,8 @@ EntriesCtrl = (function() {
 
     Entry.findOne({ id: req.params.id })
     .then(function(entry) {
+      if (!entry) { throw new Error('Entry not found'); }
+
       entry.set('text', req.body.text);
       return entry.save()
     })
