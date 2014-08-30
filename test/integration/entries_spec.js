@@ -101,7 +101,21 @@ describe('Journal entries', function() {
         });
     });
 
-    it('should allow deleting an existing entry');
+    it('should allow deleting an existing entry', function(done) {
+      request
+        .del('/entries/' + _entry.id)
+        .expect(200)
+        .end(function(err, res) {
+          if (err) { return done(err) ; }
+
+          Entry.findOne({ id: _entry.id })
+          .then(function(data) {
+            expect(data).not.to.exist;
+            done();
+          });
+        });
+    });
+
     it('should allow retrieving a list of entries');
     it('should allow retrieving entries by month and year');
   });

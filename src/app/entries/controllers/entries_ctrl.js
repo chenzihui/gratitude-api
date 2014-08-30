@@ -43,9 +43,21 @@ EntriesCtrl = (function() {
     });
   };
 
+  var destroy = function(req, res) {
+
+    Entry.findOne({ id: req.params.id })
+    .then(function(entry) {
+      return entry.destroy();
+    })
+    .then(function() {
+      return res.status(200).json({});
+    });
+  };
+
   return {
     create: create,
-    update: update
+    update: update,
+    destroy: destroy
   };
 
 }());

@@ -7,5 +7,6 @@ var express     = require('express'),
 
 router.post('/', controllers.entriesCtrl.create);
 router.put('/:id', controllers.entriesCtrl.update);
+router.delete('/:id', controllers.entriesCtrl.destroy);
 
 module.exports = router;
