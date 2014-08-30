@@ -47,10 +47,19 @@ EntriesCtrl = (function() {
 
     Entry.findOne({ id: req.params.id })
     .then(function(entry) {
+      if (!entry) {
+        throw new Error('Entry not found');
+      }
+
       return entry.destroy();
     })
     .then(function() {
       return res.status(200).json({});
+    })
+    .catch(function(err) {
+      return res.status(404).json({
+        errors: { message: 'Entry not found' }
+      });
     });
   };
 
