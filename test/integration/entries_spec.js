@@ -165,6 +165,32 @@ describe('Journal entries', function() {
         });
     });
 
-    it('should allow retrieving entries by month and year');
+    it('should allow retrieving entries by month and year', function(done) {
+      var args = {
+        created_at: new Date(2014, 5, 30),
+        updated_at: new Date(2014, 5, 30)
+      },
+
+      _entry, ids;
+
+      EntryFactory.create(args)
+      .then(function(entry) {
+        _entry = entry.toJSON();
+
+        request
+          .get('/entries')
+          .query({ month: 6, year: 2014 })
+          .expect(200)
+          .end(function(err, res) {
+            if (err) { return done(err); }
+
+            expect(res.body.entries.length).to.equal(1);
+
+            ids = _.pluck(res.body.entries, 'id');
+            expect(ids).to.contain(_entry.id);
+            done();
+          });
+      });
+    });
   });
 });

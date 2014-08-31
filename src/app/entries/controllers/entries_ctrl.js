@@ -7,7 +7,7 @@ var Entry = require('../models/entry'),
 EntriesCtrl = (function() {
 
   var index = function(req, res) {
-    Entry.findAll()
+    Entry.findAll(req.query.month, req.query.year)
     .then(function(entries) {
       return res.status(200).json({
         entries: entries.toJSON()

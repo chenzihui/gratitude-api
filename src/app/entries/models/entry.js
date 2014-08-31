@@ -12,8 +12,19 @@ Entry = Base.Model.extend({
   }
 
 }, {
-  findAll: function() {
-    return this.collection().fetch();
+  findAll: function(month, year) {
+    if (!month || !year) {
+      var month = new Date().getMonth() + 1,
+          year  = new Date().getFullYear();
+    }
+
+    return this.collection().query(function(qb) {
+      qb.whereRaw(
+        'EXTRACT(MONTH FROM created_at) = ? ' +
+        'AND EXTRACT(YEAR FROM created_at) = ?',
+        [month, year]
+      );
+    }).fetch();
   }
 });
 
