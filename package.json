@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "description": "API for a Gratitude Journal app",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "start": "NODE_ENV=production node ./src/app/app.js"
   },
   "dependencies": {
     "body-parser": "^1.6.5",
