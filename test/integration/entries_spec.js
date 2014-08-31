@@ -1,6 +1,7 @@
 'use strict';
 
-var db           = require('../support/db'),
+var _            = require('underscore'),
+    db           = require('../support/db'),
 
     Entry        = require('../../src/app/entries/models/Entry'),
     EntryFactory = require('../support/factories/entry_factory');
@@ -55,7 +56,7 @@ describe('Journal entries', function() {
       });
   });
 
-  describe('Existing entries', function() {
+  describe('Modifying entries', function() {
 
     var _entry;
 
@@ -127,8 +128,43 @@ describe('Journal entries', function() {
           done();
         });
     });
+  });
 
-    it('should allow retrieving a list of entries');
+  describe('Getting entries', function() {
+    var _e1, _e2;
+
+    beforeEach(function(done) {
+      EntryFactory.create()
+      .then(function(entry) {
+        _e1 = entry.toJSON();
+
+        return EntryFactory.create();
+      })
+      .then(function(entry) {
+        _e2 = entry.toJSON();
+        done();
+      });
+    });
+
+    it('should allow retrieving a list of entries', function(done) {
+      var ids;
+
+      request
+        .get('/entries')
+        .expect(200)
+        .end(function(err, res) {
+          if (err) { return done(err); }
+
+          expect(res.body.entries.length).to.equal(2);
+
+          ids = _.pluck(res.body.entries, 'id');
+          expect(ids).to.contain(_e1.id);
+          expect(ids).to.contain(_e2.id);
+
+          done();
+        });
+    });
+
     it('should allow retrieving entries by month and year');
   });
 });

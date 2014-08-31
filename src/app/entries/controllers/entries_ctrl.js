@@ -6,6 +6,15 @@ var Entry = require('../models/entry'),
 
 EntriesCtrl = (function() {
 
+  var index = function(req, res) {
+    Entry.findAll()
+    .then(function(entries) {
+      return res.status(200).json({
+        entries: entries.toJSON()
+      });
+    });
+  };
+
   var create = function(req, res) {
     var args = {
       text: req.body.text
@@ -66,6 +75,7 @@ EntriesCtrl = (function() {
   };
 
   return {
+    index: index,
     create: create,
     update: update,
     destroy: destroy

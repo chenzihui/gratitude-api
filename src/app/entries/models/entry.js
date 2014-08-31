@@ -11,6 +11,10 @@ Entry = Base.Model.extend({
     text: ['required']
   }
 
+}, {
+  findAll: function() {
+    return this.collection().fetch();
+  }
 });
 
 module.exports = Entry;

@@ -5,6 +5,7 @@ var express     = require('express'),
 
     router      = express.Router();
 
+router.get('/', controllers.entriesCtrl.index);
 router.post('/', controllers.entriesCtrl.create);
 router.put('/:id', controllers.entriesCtrl.update);
 router.delete('/:id', controllers.entriesCtrl.destroy);
